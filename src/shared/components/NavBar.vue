@@ -52,4 +52,13 @@ span {
 a {
   margin-right: 5px;
 }
+
+.router-link-active {
+  text-decoration: underline;
+  color: blue;
+}
+
+.router-link-exact-active {
+  color: red;
+}
 </style>
