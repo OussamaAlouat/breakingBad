@@ -1,22 +1,35 @@
 <script setup lang="ts">
+  import type { RouterLink } from '@/router/link-routes';
+
   const props = 
   withDefaults(defineProps<Props>(), {
-    tittle: 'hello',
+    title: 'hello',
   });
 
 
   interface Props {
-    tittle: string,
+    title: string,
+    links: RouterLink []
   }
 </script>
 
 <template>
   <nav>
     <img src="@/assets/logo.svg" alt="Vue logo" height="25" width="25" />
-    <span>{{ tittle }}</span>
+    <span>{{ title }}</span>
 
+    <RouterLink 
+      v-for="link of links"
+      :key="link.name"
+      :to="link.path"
+    >
+      {{ link.title }}
+    </RouterLink>
+
+    <!--
     <RouterLink :to="{name: 'home'}">Inicio</RouterLink>
     <RouterLink :to="{name: 'about'}">Sobre</RouterLink>
+    -->
 
   </nav>
 </template>
