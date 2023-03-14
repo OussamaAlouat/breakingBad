@@ -4,9 +4,6 @@ export interface RouterLink {
   title: string;
 }
 
-
-
-
 export const routerLinks: RouterLink[] = [
   {name: 'home', path: '/', title: 'Inicio'},
   {name: 'about', path: '/about', title: 'Sobre'},

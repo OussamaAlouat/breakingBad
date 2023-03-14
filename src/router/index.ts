@@ -9,18 +9,15 @@ const router = createRouter({
     // Public
     { path: '/', name: 'home', component: HomePage  },
     { path: '/about', name: 'about', component: AboutPage  },
-
     // characters
     {
       ...characterRoute,
       path: '/characters'
     },
-
     //Default
     {
       path: '/:pathMatch(.*)*' ,redirect: () => ({  name: 'home'  }) 
     }
-
   ],
 });
 
