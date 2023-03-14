@@ -3,20 +3,23 @@
 
   const props = 
   withDefaults(defineProps<Props>(), {
-    title: 'hello',
+    showIcon: true,
+    links: () => []
   });
 
 
   interface Props {
-    title: string,
-    links: RouterLink []
-  }
+    title?: string,
+    links: RouterLink [],
+    showIcon?: boolean,
+  };
+
 </script>
 
 <template>
   <nav>
-    <img src="@/assets/logo.svg" alt="Vue logo" height="25" width="25" />
-    <span>{{ title }}</span>
+    <img v-if="showIcon"  src="@/assets/logo.svg" alt="Vue logo" height="25" width="25" />
+    <span v-if="title">{{ title }}</span>
 
     <RouterLink 
       v-for="link of links"
@@ -25,12 +28,6 @@
     >
       {{ link.title }}
     </RouterLink>
-
-    <!--
-    <RouterLink :to="{name: 'home'}">Inicio</RouterLink>
-    <RouterLink :to="{name: 'about'}">Sobre</RouterLink>
-    -->
-
   </nav>
 </template>
 
