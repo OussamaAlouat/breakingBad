@@ -1,3 +1,4 @@
+import { characterRoute } from '@/characters/router';
 import AboutPage from '@/shared/pages/AboutPage.vue';
 import HomePage from '@/shared/pages/HomePage.vue';
 import { createRouter, createWebHistory } from 'vue-router';
@@ -11,11 +12,9 @@ const router = createRouter({
 
     // characters
     {
-      path: '/characters',
-      name: 'characters',
-      component: () => import('@/characters/layout/CharacterLayout.vue'),
+      ...characterRoute,
+      path: '/characters'
     },
-
 
     //Default
     {
