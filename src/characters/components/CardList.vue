@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import rickAndMortyApi from '@/api/rickAndMortyApi';
 import type { RickAndMorty } from '@/characters/interfaces/character';
+import { useCharacters } from '../composables/useCharacters';
 
-rickAndMortyApi.get<RickAndMorty>('/character').then((resp) =>{
-    console.log(resp.data.results)
-  });
+const { characters, isLoading } = useCharacters();
+
+
 </script>
 
 <template>
+
+  <h1 v-if="isLoading">Loading ....</h1>
   <ul>
-    <li>Hola</li>
-    <li>Hola</li>
-    <li>Hola</li>
+    <li v-for="character of characters" >{{  character.name  }}</li>
   </ul>
 </template>
 
