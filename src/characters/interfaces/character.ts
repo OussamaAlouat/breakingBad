@@ -1,26 +1,48 @@
-export interface Character {
-  char_id: number;
-  name: string;
-  birthday: string;
-  ocupation: string[];
-  img: string;
-  status: Status;
-  nickname: string;
-  appearance: number [];
-  portrayed: string;
-  category: Category;
-  better_call_saul_appearance: number [];
+export interface RickAndMorty {
+  info:    Info;
+  results: Character[];
 }
 
-export enum Category {
-  BetterCallSaul = "Better Call Saul",
-  BreakingBad = "Breaking Bad",
-  BreakingBadBetterCallSaul = "Breaking Bad, Better Call Saul"
+export interface Info {
+  count: number;
+  pages: number;
+  next:  string;
+  prev:  null;
+}
+
+export interface Character {
+  id:       number;
+  name:     string;
+  status:   Status;
+  species:  Species;
+  type:     string;
+  gender:   Gender;
+  origin:   Location;
+  location: Location;
+  image:    string;
+  episode:  string[];
+  url:      string;
+  created:  string;
+}
+
+export enum Gender {
+  Female = "Female",
+  Male = "Male",
+  Unknown = "unknown",
+}
+
+export interface Location {
+  name: string;
+  url:  string;
+}
+
+export enum Species {
+  Alien = "Alien",
+  Human = "Human",
 }
 
 export enum Status {
-  Alive ="Alive",
-  Deceased ="Deceased",
-  PresumedDead="Presumed dead",
-  Unknown="Unknown"
+  Alive = "Alive",
+  Dead = "Dead",
+  Unknown = "unknown",
 }
