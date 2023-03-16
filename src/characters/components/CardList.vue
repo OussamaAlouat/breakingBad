@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import breakingBadApi from '@/api/breakingBadApi';
+import rickAndMortyApi from '@/api/rickAndMortyApi';
+import type { RickAndMorty } from '@/characters/interfaces/character';
 
-  breakingBadApi.get('/quotes').then((resp) =>{
-    console.log(resp.data)
+rickAndMortyApi.get<RickAndMorty>('/character').then((resp) =>{
+    console.log(resp.data.results)
   });
 </script>
 
