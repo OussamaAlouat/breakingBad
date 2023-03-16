@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import breakingBadApi from '@/api/breakingBadApi';
 
-  breakingBadApi.get('/quotes').then((resp) => console.log(resp.data))
+  breakingBadApi.get('/quotes').then((resp) =>{
+    console.log(resp.data)
+  });
 </script>
 
 <template>
