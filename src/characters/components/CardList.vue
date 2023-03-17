@@ -1,19 +1,24 @@
 <script setup lang="ts">
-import rickAndMortyApi from '@/api/rickAndMortyApi';
-import type { RickAndMorty } from '@/characters/interfaces/character';
-import { useCharacters } from '../composables/useCharacters';
+import CharacterCard from '@/characters/components/CharacterCard.vue';
+import type { Character } from '@/characters/interfaces/character';
 
-const { characters, isLoading, hasError, errorMessage } = useCharacters();
-
-
+const props = defineProps<{ characters: Character[] }>()
 </script>
 
 <template>
-  <h1 v-if="isLoading">Loading ....</h1>
-  <h1 v-if="hasError">Error: {{ errorMessage }}</h1>
-  <ul>
-    <li v-for="character of characters">{{ character.name }}</li>
-  </ul>
+  <div class="card-list">
+    <CharacterCard
+      v-for="character of characters"
+      :key="character.id"
+      :character="character"
+    />
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.card-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+</style>
