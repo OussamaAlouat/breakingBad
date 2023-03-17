@@ -1,16 +1,27 @@
 <script setup lang="ts">
 import rickAndMortyApi from '@/api/rickAndMortyApi';
-import type { RickAndMorty } from '@/characters/interfaces/character';
-import { useCharacters } from '../composables/useCharacters';
+import type { Character, RickAndMorty } from '@/characters/interfaces/character';
+import { useQuery } from '@tanstack/vue-query';
 
-const { characters, isLoading, hasError, errorMessage } = useCharacters();
+const getCharactersSlow = async(): Promise<Character[]> => {
+  const { data} = await rickAndMortyApi.get<RickAndMorty>('/character');
+  return data.results;
+}
 
+const { isLoading, isError, data: characters, error } = useQuery(
+  ['characters'],
+  getCharactersSlow,
+  {
+    cacheTime: 1000 * 60, // cache for a 1 minute time
+    refetchOnReconnect: 'always',
+  }
+);
 
 </script>
 
 <template>
   <h1 v-if="isLoading">Loading ....</h1>
-  <h1 v-if="hasError">Error: {{ errorMessage }}</h1>
+  <h1 v-if="isError">Error: {{ error }}</h1>
   <ul>
     <li v-for="character of characters">{{ character.name }}</li>
   </ul>
