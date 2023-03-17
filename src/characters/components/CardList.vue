@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import CharacterCard from '@/characters/components/CharacterCard.vue';
+import { useQuery } from '@tanstack/vue-query';
 import rickAndMortyApi from '@/api/rickAndMortyApi';
 import type { Character, RickAndMorty } from '@/characters/interfaces/character';
-import { useQuery } from '@tanstack/vue-query';
+
 
 const getCharactersSlow = async(): Promise<Character[]> => {
   const { data} = await rickAndMortyApi.get<RickAndMorty>('/character');
@@ -22,9 +24,19 @@ const { isLoading, isError, data: characters, error } = useQuery(
 <template>
   <h1 v-if="isLoading">Loading ....</h1>
   <h1 v-if="isError">Error: {{ error }}</h1>
-  <ul>
-    <li v-for="character of characters">{{ character.name }}</li>
-  </ul>
+  <div class="card-list">
+    <CharacterCard
+      v-for="character of characters"
+      :key="character.id"
+      :character="character"
+    />
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.card-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+</style>
