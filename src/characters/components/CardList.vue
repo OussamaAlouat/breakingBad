@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import breakingBadApi from '@/api/breakingBadApi';
+import rickAndMortyApi from '@/api/rickAndMortyApi';
+import type { RickAndMorty } from '@/characters/interfaces/character';
+import { useCharacters } from '../composables/useCharacters';
 
-  breakingBadApi.get('/quotes').then((resp) => console.log(resp.data))
+const { characters, isLoading, hasError, errorMessage } = useCharacters();
+
+
 </script>
 
 <template>
+  <h1 v-if="isLoading">Loading ....</h1>
+  <h1 v-if="hasError">Error: {{ errorMessage }}</h1>
   <ul>
-    <li>Hola</li>
-    <li>Hola</li>
-    <li>Hola</li>
+    <li v-for="character of characters">{{ character.name }}</li>
   </ul>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
