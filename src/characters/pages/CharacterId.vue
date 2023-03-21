@@ -1,16 +1,56 @@
 <script setup lang="ts">
+import rickAndMortyApi from '@/api/rickAndMortyApi';
+import characterStore from '@/store/characters.store';
+import { useQuery } from '@tanstack/vue-query';
+import { isAxiosError } from 'axios';
 import { useRoute } from 'vue-router';
-import type { Character } from '../interfaces/character';
+import type { Character, RickAndMorty } from '../interfaces/character';
 
 const route = useRoute();
 const { id} = route.params as { id: string };
 
+const getCharacterCacheFirst = async() => {
+  if (characterStore.checkIdInStore(id)) {
+    return characterStore.ids.list[id];
+  }
+
+  const { data } = await rickAndMortyApi.get<Character>(`/character/${id}`);
+  return data;
+}
+
+useQuery(
+  ['character'],
+  getCharacterCacheFirst,
+  {
+    onSuccess(data: Character) {
+      characterStore.loadedCharacter(data);
+    },
+    onError(error) {
+      if (isAxiosError(error)) {
+        characterStore.loadedCharacterFailed(error.message);
+      } else {
+        characterStore.loadedCharacterFailed(JSON.stringify(error));
+      }
+    }
+  }
+);
 
 </script>
 
 <template>
   <div>
-    <h1>Character {{ id }}</h1>
+    <h1 v-if="characterStore.characters.isLoading">Loading ....</h1>
+    <h1 v-else>Character information</h1>
+    <div v-if="characterStore.checkIdInStore(id)" class="character">
+      <img :src="characterStore.ids.list[id].image" :alt="characterStore.ids.list[id].name">
+      <div>
+        <p>Name: {{ characterStore.ids.list[id].name }}</p>
+        <p>Species: {{ characterStore.ids.list[id].species }}</p>
+        <p>Gender: {{ characterStore.ids.list[id].gender }}</p>
+        <p>Status: {{ characterStore.ids.list[id].status }}</p>
+        <p>Origin: {{ characterStore.ids.list[id].origin }}</p>
+      </div>
+    </div>
     <!--
     <div>
       <h1>{{ character.name }}</h1>
@@ -21,4 +61,7 @@ const { id} = route.params as { id: string };
 </template>
 
 <style scoped>
+.character {
+  display: flex;
+}
 </style>
