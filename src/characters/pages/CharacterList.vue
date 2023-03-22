@@ -5,6 +5,7 @@ import characterStore from '@/store/characters.store';
 import type { Character, RickAndMorty } from '@/characters/interfaces/character';
 import rickAndMortyApi from '@/api/rickAndMortyApi';
 import { useQuery } from '@tanstack/vue-query';
+import { isAxiosError } from 'axios';
 
 const props = defineProps<{ title: string, visible: boolean }>()
 
@@ -15,7 +16,6 @@ const getCharactersCacheFirst = async (): Promise<Character[]> => {
 
   const { data } = await rickAndMortyApi.get<RickAndMorty>('/character');
   return data.results;
-
 }
 
 useQuery(
@@ -25,14 +25,15 @@ useQuery(
     onSuccess(data: Character[]) {
       characterStore.loadedCharacters(data);
     },
-    onError(error: string) {
-      characterStore.loadedCharactersFailed(error);
+    onError(error) {
+      if (isAxiosError(error)) {
+        characterStore.loadedCharactersFailed(error.message);
+      } else {
+        characterStore.loadedCharactersFailed(JSON.stringify(error));
+      }
     }
   }
 );
-
-
-
 
 </script>
 
