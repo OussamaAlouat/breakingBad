@@ -39,11 +39,11 @@ useQuery(
 
 <template>
   <div>
-    <h1 v-if="characterStore.characters.isLoading">Loading ....</h1>
+    <h1 v-if="characterStore.ids.isLoading">Loading ....</h1>
     <h1 v-else>Character information</h1>
     <div v-if="characterStore.checkIdInStore(id)" class="character">
       <img :src="characterStore.ids.list[id].image" :alt="characterStore.ids.list[id].name">
-      <div>
+      <div class="character__description">
         <p>Name: {{ characterStore.ids.list[id].name }}</p>
         <p>Species: {{ characterStore.ids.list[id].species }}</p>
         <p>Gender: {{ characterStore.ids.list[id].gender }}</p>
@@ -51,17 +51,21 @@ useQuery(
         <p>Origin: {{ characterStore.ids.list[id].origin }}</p>
       </div>
     </div>
-    <!--
-    <div>
-      <h1>{{ character.name }}</h1>
-      <img :src="character.image" :alt="character.name" >
-    </div>
-    -->
   </div>
 </template>
 
 <style scoped>
 .character {
   display: flex;
+}
+
+.character__description {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+img {
+  border-radius: 10px;
 }
 </style>
