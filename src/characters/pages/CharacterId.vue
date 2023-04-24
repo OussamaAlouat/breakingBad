@@ -63,6 +63,12 @@ useQuery(
   display: flex;
   flex-direction: column;
   margin-left: 10px;
+  order: 1px solid black;
+  padding: 5px;
+  background: antiquewhite;
+  border-radius: 10px;
+  box-shadow: 10px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 img {
