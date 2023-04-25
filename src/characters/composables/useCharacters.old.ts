@@ -8,7 +8,7 @@ const isLoading = ref<boolean>(true);
 const errorMessage = ref<string>('');
 const hasError = ref<boolean>(false);
 
-export const useCharacters = () => {
+export const useCharactersOld = () => {
 
   onMounted(async() => {
     loadCharacters();
