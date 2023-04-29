@@ -1,6 +1,6 @@
 import rickAndMortyApi from "@/api/rickAndMortyApi";
 import { useQuery } from "@tanstack/vue-query";
-import { isAxiosError } from "axios";
+import { AxiosError, isAxiosError } from "axios";
 import { ref, computed } from "vue";
 import type { Character } from "../interfaces/character";
 
@@ -13,23 +13,29 @@ const getCharacter = async(id: string) => {
     return characterSet.value[id];
   }
 
-  const { data } = await rickAndMortyApi.get<Character>(`/character/${id}`);
-  console.log(data)
-  return data;
+  try {
+    const { data } = await rickAndMortyApi.get<Character>(`/character/${id}`);
+    console.log(data)
+    if(data && data.id) {
+      return data
+    } else {
+      throw new Error(`Not foud pokemon with id ${id}`)
+    }
+  } catch (error: any) {
+    throw new Error(error);
+  }
 }
 
 const loadedCharacter = (data: Character) => {
   hasError.value = false;
   errorMessage.value = null;
-
   characterSet.value[data.id] = data;
 }
 
-const loadedCharacterFailed = (error: string) => {
+const loadedCharacterFailed = (error: any) => {
   hasError.value = true;
   errorMessage.value = error;
 }
-
 
 const useCharacter = (id: string) => {
   console.log('iME HGERE', id)
@@ -38,13 +44,7 @@ const useCharacter = (id: string) => {
     () => getCharacter(id),
     {
       onSuccess: loadedCharacter,
-      onError(error) {
-        if (isAxiosError(error)) {
-          loadedCharacterFailed(error.message);
-        } else {
-          loadedCharacterFailed(JSON.stringify(error));
-        }
-      }
+      onError: loadedCharacterFailed,
     }
   );
   return {
