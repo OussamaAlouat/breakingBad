@@ -15,7 +15,6 @@ const getCharacter = async(id: string) => {
 
   try {
     const { data } = await rickAndMortyApi.get<Character>(`/character/${id}`);
-    console.log(data)
     if(data && data.id) {
       return data
     } else {
@@ -38,7 +37,6 @@ const loadedCharacterFailed = (error: any) => {
 }
 
 const useCharacter = (id: string) => {
-  console.log('iME HGERE', id)
   const { isLoading } = useQuery(
     ['character', id],
     () => getCharacter(id),
