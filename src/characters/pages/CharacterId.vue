@@ -1,10 +1,18 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+import { watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import useCharacter from '../composables/useCharacter';
 
 const route = useRoute();
+const router = useRouter();
 const { id} = route.params as { id: string };
 const { isLoading, character, errorMessage, hasError } = useCharacter(id);
+
+watch((isLoading), () => {
+  if(!isLoading.value && hasError.value) {
+    router.replace('/characters');
+  }
+});
 
 </script>
 
